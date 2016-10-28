@@ -1,0 +1,33 @@
+﻿using Microsoft.Office.Interop.Excel;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ExcelConverter.Utils
+{
+    public class ExcelUtils
+    {
+        public static String ConvertToPDF(String filePath, String destPath)
+        {
+            if (!filePath.IsNormalized() || !File.Exists(filePath))
+                throw new Exception("未指定文件");
+            if (!filePath.EndsWith("xls") && !filePath.EndsWith("xlsx"))
+                throw new Exception("文件非 Excel 类型");
+
+            ApplicationClass eapp = new ApplicationClass();
+            Type eType = eapp.GetType();
+            Workbooks Ewb = eapp.Workbooks;
+            Type elType = Ewb.GetType();
+            Workbook ebook = (Workbook)elType.InvokeMember("Open", System.Reflection.BindingFlags.InvokeMethod, null, Ewb, new Object[] { filePath, true, true });
+            Object oMissing = System.Reflection.Missing.Value;
+            ebook.PrintOut(oMissing, oMissing, oMissing, oMissing, oMissing, true, oMissing, destPath);
+            ebook.Close(false);
+            eType.InvokeMember("Quit", System.Reflection.BindingFlags.InvokeMethod, null, eapp, null);
+
+            return destPath;
+        }
+    }
+}

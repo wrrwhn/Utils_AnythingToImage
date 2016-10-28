@@ -1,0 +1,13 @@
+
+#visual studio 2013
+*.vssscc
+*.vspscc
+Miya.Spider/packages/
+bin/
+obj/
+*.suo
+
+# Windows:
+Thumbs.db
+ehthumbs.db
+Desktop.ini
