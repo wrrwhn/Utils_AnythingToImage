@@ -19,6 +19,8 @@ namespace PPTConverter
             //PPTUtils.ConvertToPDF(xlsxFile, outputFile + xlsxFile.Substring(xlsxFile.LastIndexOf("\\")) + ".pdf");            
             PPTUtils.ConvertToIMAGE(pptFile, outputFile + "ppt");
             PPTUtils.ConvertToIMAGE(pptFile, outputFile+ "pptx");
+
+            Console.ReadKey();
         }
     }
 }

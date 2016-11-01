@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace PPTConverter.Utils
@@ -38,6 +39,18 @@ namespace PPTConverter.Utils
             presentation.SaveAs(destPath, PpSaveAsFileType.ppSaveAsJPG);
             presentation.Close();
             app.Quit();
+
+            // rename
+            List<String> list = new List<string>();
+            String[] fileNames = Directory.GetFiles(destPath);
+            Regex regex = new Regex("\\d+");
+            foreach (var fileName in fileNames)
+            {
+                String newFileName = Path.Combine(Path.GetDirectoryName(fileName), regex.Match(Path.GetFileNameWithoutExtension(fileName)).Value + Path.GetExtension(fileName).ToLower());
+                File.Move(fileName, newFileName);
+                Console.WriteLine(newFileName);
+                list.Add(newFileName);
+            }
 
             return destPath;
         }

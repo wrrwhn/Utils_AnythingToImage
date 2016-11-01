@@ -17,6 +17,7 @@ namespace WordConverter
             String docxFile = @"D:\资料备份\资料\工作\测试\anythingToImage\from\test.docx";
             String outputFile = @"D:\资料备份\资料\工作\测试\anythingToImage\to\";
 
+            WordUtils.ConvertToPDF(docFile, outputFile + docFile.Substring(docFile.LastIndexOf("\\")) + ".pdf");
             WordUtils.ConvertToPDF(docxFile, outputFile + docxFile.Substring(docxFile.LastIndexOf("\\")) + ".pdf");
         }
     }

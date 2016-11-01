@@ -41,8 +41,7 @@ namespace WordConverter.Utils
             File.Delete(OutPutFiletemp.ToString());
         }
 
-
-        public static void ConvertToPDF(String filePath, String destpath)
+        public static void ConvertToPDFWithPrinter(String filePath, String destpath)
         {
             // file exist & check type
             if (!filePath.IsNormalized() || !File.Exists(filePath))
@@ -59,6 +58,32 @@ namespace WordConverter.Utils
             Type docType = doc.GetType();
             docType.InvokeMember("PrintOut", System.Reflection.BindingFlags.InvokeMethod, null, doc, new object[] { false, false, Microsoft.Office.Interop.Word.WdPrintOutRange.wdPrintAllDocument, destpath });
             wordType.InvokeMember("Quit", System.Reflection.BindingFlags.InvokeMethod, null, word, null);
+        }
+
+        public static void ConvertToPDF(String filePath, String destpath)
+        {
+            // file exist & check type
+            if (!filePath.IsNormalized() || !File.Exists(filePath))
+                throw new Exception("未指定文件");
+            if (!filePath.EndsWith("doc") && !filePath.EndsWith("docx"))
+                throw new Exception("文件非 word 类型");
+
+            Microsoft.Office.Interop.Word.ApplicationClass word = new Microsoft.Office.Interop.Word.ApplicationClass();
+            Microsoft.Office.Interop.Word.Document doc = word.Documents.Open(filePath);
+            doc.ExportAsFixedFormat(destpath, WdExportFormat.wdExportFormatPDF);
+
+
+
+            // rename
+            List<String> list = new List<string>();
+            String[] fileNames = Directory.GetFiles(destPath);
+            foreach (var fileName in fileNames)
+            {
+                String newFileName = Path.Combine(Path.GetDirectoryName(fileName), Path.GetFileNameWithoutExtension(fileName) + Path.GetExtension(fileName));
+                File.Move(fileName, newFileName);
+                list.Add(newFileName);
+            }
+
         }
     }
 }
