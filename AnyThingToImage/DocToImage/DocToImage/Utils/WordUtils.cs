@@ -72,11 +72,9 @@ namespace WordConverter.Utils
             Microsoft.Office.Interop.Word.Document doc = word.Documents.Open(filePath);
             doc.ExportAsFixedFormat(destpath, WdExportFormat.wdExportFormatPDF);
 
-
-
             // rename
             List<String> list = new List<string>();
-            String[] fileNames = Directory.GetFiles(destPath);
+            String[] fileNames = Directory.GetFiles(destpath);
             foreach (var fileName in fileNames)
             {
                 String newFileName = Path.Combine(Path.GetDirectoryName(fileName), Path.GetFileNameWithoutExtension(fileName) + Path.GetExtension(fileName));
